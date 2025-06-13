@@ -1,6 +1,5 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 
 @st.cache_data
@@ -13,13 +12,14 @@ def create_plot(df_new, name='bijiy'):
 
     for color, time in zip(['black', 'red', 'brown', 'green', 'blue'], [30, 60, 180, 240, 300]):
         df_loc = df_new[(df_new['Name'] == name) & (df_new['Turn'] == 0) & (df_new['Time'] == time)].copy()
+        if df_loc.empty:
+            continue
         df_loc['SumDif'] = df_loc['RatingDif'].cumsum()
         x = pd.to_datetime(df_loc['Date'])
         y = df_loc['SumDif']
         ax.plot(x, y, color=color, label=str(time))
-        if not df_loc.empty:
-            ax.text(x.iloc[-1], y.iloc[-1], str(len(df_loc)), color=color,
-                    fontsize=12, verticalalignment='bottom', horizontalalignment='left')
+        ax.text(x.iloc[-1], y.iloc[-1], str(len(df_loc)), color=color,
+                fontsize=12, verticalalignment='bottom', horizontalalignment='left')
 
     ax.set_xlabel('Время')
     ax.set_ylabel('Изменение рейтинга')
@@ -31,11 +31,12 @@ def create_plot(df_new, name='bijiy'):
 
 def main():
     st.title("Graph")
-    df = load_data("https://drive.google.com/file/d/17sn61A1ntXtVJmr9aINGB8lOPBVU0H-7/view?usp=sharing")
-    name = st.number_input("Enter the player's nickname", value=2)
+    url = "https://drive.google.com/uc?export=download&id=17sn61A1ntXtVJmr9aINGB8lOPBVU0H-7"
+    df = load_data(url)
+    name = st.text_input("Enter the player's nickname", value="bijiy")
     if st.button("Get player statistics"):
         fig = create_plot(df, name)
-        st.pyplot(fig)  # отображаем график в приложении
+        st.pyplot(fig)
 
 if __name__ == "__main__":
     main()
