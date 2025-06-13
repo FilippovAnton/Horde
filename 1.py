@@ -4,10 +4,6 @@ import numpy as np
 import pandas as pd
 
 @st.cache_data
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-
 def load_data(path):
     df = pd.read_csv(path, parse_dates=['Date'])  
     return df
