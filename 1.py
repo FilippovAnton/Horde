@@ -4,7 +4,7 @@ import pandas as pd
 
 @st.cache_data
 def load_data(path):
-    df = pd.read_csv(path, parse_dates=['Date'])  
+    df = pd.read_csv(path, index_col=0, parse_dates=['Date']) 
     return df
 
 def create_plot(df_new, name='bijiy'):
