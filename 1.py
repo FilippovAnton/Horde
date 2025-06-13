@@ -7,7 +7,7 @@ import gdown
 def load_data(url):
     output = 'file.csv'
     gdown.download(url, output, quiet=False)
-    df = pd.read_csv(output, index_col=0, parse_dates=['Date'])
+    df = pd.read_csv(output) #, index_col=0, parse_dates=['Date'])
     return df
 
 def create_plot(df_new, name='bijiy'):
